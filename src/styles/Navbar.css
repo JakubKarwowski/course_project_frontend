@@ -1,0 +1,10 @@
+a.navbar-brand{
+    font-size: 25px;
+}
+a.navbar-brand:hover{
+    color: #aaa;
+}
+
+div.container-fluid{
+    max-width: 1280px;
+}
