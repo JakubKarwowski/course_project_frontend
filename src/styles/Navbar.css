@@ -8,3 +8,7 @@ a.navbar-brand:hover{
 div.container-fluid{
     max-width: 1280px;
 }
+div.user{
+    color: #777;
+    height: 100%;
+}

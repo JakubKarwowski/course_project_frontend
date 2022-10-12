@@ -1,12 +1,14 @@
 import axios from "axios";
 import "../styles/RegisterPage.css";
+import {useNavigate} from "react-router-dom";
 
 function RegisterPage (){
+    const navigate = useNavigate();
 
     function handleOnSubmit(e){
         e.preventDefault();
         const form = e.target
-        axios.post("https://courseprojectjakubkarwowski.herokuapp.com/users/createuser", {
+        axios.post("https://courseprojectjakubkarwowski.herokuapp.com/authentication/register", {
         username: form[0].value,
         name: form[0].value,
         password: form[1].value,
@@ -14,10 +16,10 @@ function RegisterPage (){
         blocked: false,
         })
         .then(function (response) {
-            console.log(response);
+            navigate('/login');
         })
         .catch(function (error) {
-            console.log(error);
+            window.alert(error)
         });
     }
     return(

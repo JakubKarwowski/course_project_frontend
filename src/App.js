@@ -10,8 +10,8 @@ import RegisterPage from './components/RegisterPage';
 function App() {
   return (
     <div className="App">
-      <Navbar/>
       <Router>
+        <Navbar/>
         <Routes>
           <Route exact path="/" element={<Homepage/>}/>
           <Route exact path="/login" element={<LoginPage/>}/>
