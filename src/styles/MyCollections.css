@@ -1,0 +1,61 @@
+div.formcontainer{
+    margin:30px auto;
+    padding:30px;
+    max-width: 900px;
+    border: black 2px solid;
+}
+
+button{
+    margin:5px;
+}
+
+ button.collection{
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+} 
+
+
+div.row{
+    justify-content: center;
+}
+p.tag{
+    margin: 0;
+    font-style: italic;
+    list-style-type:none;
+}
+
+div.editcollectioncontainer{
+    background: rgba(255, 255, 255, 0.2); 
+    
+    position: fixed;
+    margin: 20px;
+    top:50%;
+    left: 50%;
+    transform:translate(-50%, -50%) ;
+    width: 80vw;
+    min-height: 300px;
+    color: red;
+    background-color: whitesmoke;
+    /* z-index: 2; */
+}
+
+div.background{
+    position: fixed;
+    top:0;
+    bottom:0;
+    width: 100vw;
+    background-color: transparent;
+    z-index: 2;
+    backdrop-filter: blur(5px);
+}
+
+button.close{
+    display: block;
+    position:absolute;
+    margin:10px;
+    top:0;
+    right: 0;
+
+}
