@@ -6,6 +6,8 @@ import {useNavigate} from "react-router-dom";
 
 function MyCollections () {
 
+    const [id, setId] = useState("");
+    const [adminStatus, setAdminStatus] = useState(false)
     const [newFormState, setNewFormState] = useState(false);
     const [username, setUsername] = useState("");
     const [collections, setCollections] = useState([]);
@@ -26,7 +28,7 @@ function MyCollections () {
         .then(function(res){
             const data = res.data
             setUsername(data.username)
-            
+            setId(data.id)
         })
         .catch(err => {
             console.log(err)
@@ -75,7 +77,6 @@ function MyCollections () {
             </div>
         )        
     }
-
     function newCollectionForm(){
         if(newFormState) {
             return(
@@ -102,46 +103,66 @@ function MyCollections () {
             )
         } 
     }
-
     function handleOnclick(){
             setNewFormState(!newFormState)
     }
-
-    function handleCollectionClick(collection){
-        setCollection(collection)
-    }
-    function editcollection(){
-        if(collection.length === 0){
-            console.log("no collection clicked")
-            return null
-        }
-        else{
-            console.log(collection)
+    // function handleCollectionClick(collection){
+    //     setCollection(collection)
+    // }
+    function editCollection(){
+        if (collection.length !== 0 && collections.includes(collection)){
             return(
                 <div className="background">
-                    <div className="editcollectioncontainer">
-                        <button onClick={closePopUp} className="close btn btn-secondary mb-3"><i className="bi bi-x-lg"></i></button>
-                    </div>
+                        <div className="editcollectioncontainer">
+                            <button onClick={closePopUp} className="close btn btn-secondary mb-3"><i className="bi bi-x-lg"></i></button>
+                            <table className="table table-bordered">
+                                <thead className="table-dark">
+                                    <tr>
+                                        <th scope="col" key='idtitle'>id</th>
+                                        <th scope="col" key='name'>name</th>
+                                        <th scope="col" key='tags'>tags</th>
+                                    </tr>
+                                </thead>
+                                {collection.items.map((item)=>{
+                                    return(
+                                        <tr>
+                                            <td key='id'>{item._id}</td>
+                                            <td key='username'>{item.name}</td>
+                                            <td key='tags'>{item.tags.map((tag) => (
+                                                `#${tag} `
+                                            ))}</td>
+                                        </tr>
+                                        
+                                    )
+                                })}
+                            </table>    
+                        </div>
                 </div>
             )
         }
-
     }
     function closePopUp(){
         setCollection([])
     }
-
-    return(
-        <>
-        {editcollection()}
-        <div className="container">
-            <h1>MyCollections</h1>
-            <button type="button" className="btn btn-secondary mb-3" onClick={handleOnclick}>Add new collection</button>
-            <button type="button" className="btn btn-secondary mb-3" onClick={handleOnclick}>Delete</button>
-            {newCollectionForm()}
+    function handleDelete(e){
+        axios.delete(`https://courseprojectjakubkarwowski.herokuapp.com/collections/deletecollection`, {data: {id: e.target.id}})
+        setCollections(collections.filter((collection)=> {
+            return collection._id !==e.target.id})  
+        )
+    };
+    function createCollections(){
+        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
+        .then(res => {
+            let user = res.data.find(item => item._id === id)
+            setAdminStatus(user.admin)
+        })
+        .catch(error => console.log(error))
+        let userCollections
+        adminStatus ? userCollections = collections : userCollections = collections.filter((collection) => collection.owner === username)
+        return(
             <div className="row">
-                {collections.map((collection) =>(
-                    <button className="collection m-2 col-sm-3" onClick={()=> handleCollectionClick(collection)}>
+                {userCollections.map((collection) =>(
+                    <div className="collection m-2 col-sm-3" onClick={()=>navigate(`/mycollections/${collection._id}`)}>
                         <div className="card text-center ">
                             <div className="card-body">
                                 <h5 className="card-title">Name: {collection.name}</h5>
@@ -158,13 +179,22 @@ function MyCollections () {
                                         </li>
                                     ))}
                                 </ul>
-                                {/* <button class="btn btn-primary">Edit</button>
-                                <button class="btn btn-primary">Delete</button> */}
+                                <button id={collection._id} class="btn btn-primary" onClick={handleDelete}>Delete</button>
                             </div>
                         </div>
-                    </button>
+                    </div>
                 ))}
-            </div>    
+            </div>   
+        )
+    }
+    return(
+        <>
+        <div className="container">
+            <h1>Click any collection to edit</h1>
+            <button type="button" className="btn btn-secondary mb-3" onClick={handleOnclick}>Add new collection</button>
+            {newCollectionForm()}
+            {editCollection()}
+            {createCollections()}
         </div>
         </>
     );
