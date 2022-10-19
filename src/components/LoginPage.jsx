@@ -24,19 +24,39 @@ function LoginPage (){
     function handleOnSubmit(e){
         e.preventDefault();
         const form = e.target;
-
-        axios.post('https://courseprojectjakubkarwowski.herokuapp.com/authentication/login', {
-            username: form[0].value,
-            password: form[1].value,
+        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
+        .then(res => {
+            let user = res.data.find(item => item.username === form[0].value)
+            if (user && user.blocked){
+                setErrorMessage('Your account is blocked and cannot be logged into')
+                console.log(errorMessage)
+            }
+            else{
+                axios.post('https://courseprojectjakubkarwowski.herokuapp.com/authentication/login', {
+                username: form[0].value,
+                password: form[1].value,
+                })
+                .then((response)=> {
+                const data = response.data;
+                localStorage.setItem("id", data.id)
+                localStorage.setItem("token", data.token)
+                setErrorMessage(data.message)
+                })
+                .catch(function(error){
+                setErrorMessage(error)
+                })
+            }
         })
-        .then((response)=> {
-            const data = response.data;
-            localStorage.setItem("token", data.token)
-            setErrorMessage(data.message)
-        })
-        .catch(function(error){
-            setErrorMessage(error)
-        })
+        
+    }
+    function handleAlert(){
+        if(errorMessage === "Success"){
+            navigate('/')
+        }else if(!errorMessage){
+            return null
+        } else return(
+            <div class="alert alert-danger" role="alert">{errorMessage}</div>
+        )   
     }
 
     return(
@@ -54,7 +74,7 @@ function LoginPage (){
                
                 <button type="submit" className="btn btn-primary">Log in</button>
             </form>
-            {/* {errorMessage === "Success" ? <useNavigate to="/"/> : <ErrorPopup message={errorMessage}/>} */}
+            {handleAlert()}
         </div>
         
     )

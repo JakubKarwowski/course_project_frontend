@@ -1,0 +1,13 @@
+th button.delete{
+    margin:0 5px;
+    padding:0;
+    border:none;
+    background-color: transparent;
+}
+th button.delete:hover{
+    color: #bbb
+}
+
+input.form-check-input:hover{
+    cursor: pointer;
+}
