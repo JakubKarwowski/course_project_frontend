@@ -1,19 +1,19 @@
 import "../styles/Navbar.css"
 import axios from "axios"
-import {useLayoutEffect, useState} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 function Navbar() {
 
     const[errorMessage, setErrorMessage] = useState("");
     const [logonStatus, setLogonStatus] = useState(false);
-    const [username, setUsername] = useState("");
-    const [admin, setAdmin] = useState(false);
+    const [id, setId] = useState("");
+    const [adminStatus, setAdminStatus] = useState(false)
     const [blocked, setBlocked] = useState(false);
 
     const navigate = useNavigate();
 
-    useLayoutEffect(()=>{
+    useEffect(()=>{
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
@@ -22,8 +22,7 @@ function Navbar() {
         .then(res => {
             const data = res.data
             setLogonStatus(data.isLoggedIn)
-            setUsername(data.username)
-            setAdmin(data.admin)
+            setId(data.id)           
             setBlocked(data.blocked)
         })
         .catch(err => setErrorMessage(err))
@@ -34,35 +33,36 @@ function Navbar() {
         navigate("/")
     }
 
+    function handleAdminPage(){
+        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
+        .then(res => {
+            let user = res.data.find(item => item._id === id)
+            setAdminStatus(user.admin)
+        })
+        .catch(error => console.log(error))
+        if(adminStatus){
+            return(
+                <li className="nav-item">
+                    <a className="nav-link" href="/adminpage">Admin Page</a>
+                </li>
+            )
+        }        
+    }
+
     function handleButtonList(){
 
         if (logonStatus) {
-            if(admin) {
-                return(
-                    <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                        <button className="btn  btn-outline-light" onClick={logout}>Logout</button>
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <a className="nav-link" href="/mycollections">My collections</a>
-                            </li>
-                            <li className="nav-item">
-                                <a className="nav-link" href="/adminpage">Admin Page</a>
-                            </li>  
-                        </ul>
-                    </div>
-                )
-            } else{
-                return(
-                    <div className="collapse navbar-collapse" id="navbarNavDropdown">
-                        <button className="btn  btn-outline-light" onClick={logout}>Logout</button>
-                        <ul className="navbar-nav">
-                            <li className="nav-item">
-                                <a className="nav-link" href="/mycollections">My collections</a>
-                            </li> 
-                        </ul>
-                    </div>
-                )
-            }
+            return(
+                <div className="collapse navbar-collapse" id="navbarNavDropdown">
+                    <button className="btn  btn-outline-light" onClick={logout}>Logout</button>
+                    <ul className="navbar-nav">
+                        <li className="nav-item">
+                            <a className="nav-link" href="/mycollections">My collections</a>
+                        </li>
+                        {handleAdminPage()}  
+                    </ul>
+                </div>
+            ) 
             
         } else {
             return(
