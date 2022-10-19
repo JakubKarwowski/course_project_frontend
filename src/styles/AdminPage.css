@@ -1,4 +1,4 @@
-th button.delete{
+td button.delete{
     margin:0 5px;
     padding:0;
     border:none;
@@ -10,4 +10,17 @@ th button.delete:hover{
 
 input.form-check-input:hover{
     cursor: pointer;
+}
+
+th,td{
+    text-align: center;
+}
+input.form-check-input{
+    position:absolute;
+    right:50%;
+    transform: translateX(50%);
+}
+div.form-check{
+    position:relative;
+    padding: 0;
 }

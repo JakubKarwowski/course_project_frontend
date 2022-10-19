@@ -79,20 +79,21 @@ function AdminPage () {
                 {users.map((user)=>{
                     return(
                         <tr>
-                            <th scope="row" key='delete'>
-                                <button className="delete" onClick={deleteUser} ><i className="bi bi-trash3-fill" id={user._id}></i></button>  
-                            </th>
+                            
                             <td key='id'>{user._id}</td>
                             <td key='username'>{user.username}</td>
                             <td key='admin'>
                                 <div className="form-check form-switch">
-                                    <input className="form-check-input" type="checkbox" id={user._id} checked={user.admin} onChange={handleOnChangeAdmin}></input>
+                                    <input className="form-check-input " type="checkbox" id={user._id} checked={user.admin} onChange={handleOnChangeAdmin}></input>
                                 </div>
                             </td>
                             <td key='blocked'>
                                 <div className="form-check form-switch">
                                     <input className="form-check-input" type="checkbox" id={user._id} checked={user.blocked} onChange={handleOnChangeBlocked}></input>
                                 </div>    
+                            </td>
+                            <td key='delete'>
+                                <button className="delete" onClick={deleteUser} ><i className="bi bi-trash3-fill" id={user._id}></i></button>  
                             </td>
                         </tr>
                     )    
@@ -104,14 +105,14 @@ function AdminPage () {
     return(
         <>
             <h1>AdminPage</h1>
-            <table className="table">
-                <thead className="thead-dark">
+            <table className="table table-bordered">
+                <thead className="table-dark">
                     <tr>
-                        <th scope="col" key='checktitle'></th>
                         <th scope="col" key='idtitle'>id</th>
                         <th scope="col" key='usernametitle'>username</th>
                         <th scope="col" key='admintitle'>admin</th>
                         <th scope="col" key='blockedtitle'>blocked</th>
+                        <th scope="col" key='checktitle'></th>
                     </tr>
                 </thead>
                     {createUsers()}
