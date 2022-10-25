@@ -79,7 +79,6 @@ function AdminPage () {
                 {users.map((user)=>{
                     return(
                         <tr>
-                            
                             <td key='id'>{user._id}</td>
                             <td key='username'>{user.username}</td>
                             <td key='admin'>
@@ -112,7 +111,7 @@ function AdminPage () {
                         <th scope="col" key='usernametitle'>username</th>
                         <th scope="col" key='admintitle'>admin</th>
                         <th scope="col" key='blockedtitle'>blocked</th>
-                        <th scope="col" key='checktitle'></th>
+                        <th scope="col" key='deletetitle'></th>
                     </tr>
                 </thead>
                     {createUsers()}

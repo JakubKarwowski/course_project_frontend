@@ -62,7 +62,6 @@ function MyCollections () {
             console.log(err);
         })
     }
-
     function createChoice(){
         return(
             <div className="form-group mb-2">
@@ -106,9 +105,6 @@ function MyCollections () {
     function handleOnclick(){
             setNewFormState(!newFormState)
     }
-    // function handleCollectionClick(collection){
-    //     setCollection(collection)
-    // }
     function editCollection(){
         if (collection.length !== 0 && collections.includes(collection)){
             return(
@@ -179,7 +175,7 @@ function MyCollections () {
                                         </li>
                                     ))}
                                 </ul>
-                                <button id={collection._id} class="btn btn-primary" onClick={handleDelete}>Delete</button>
+                                <button id={collection._id} className="btn btn-primary" onClick={handleDelete}>Delete</button>
                             </div>
                         </div>
                     </div>
