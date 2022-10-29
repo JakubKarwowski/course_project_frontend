@@ -63,3 +63,11 @@ div.card:hover{
     cursor: pointer;
     outline: #aaa dashed 1mm;
 }
+
+li.list-group-item{
+    background-color: transparent;
+}
+li.list-group-item.dark{
+    color: white;
+    border-color: white;
+}

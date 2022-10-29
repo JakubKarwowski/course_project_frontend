@@ -1,7 +1,8 @@
 import "../styles/AdminPage.css"
 import axios from "axios";
-import {useEffect, useReducer, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import {isRouteErrorResponse, useNavigate} from "react-router-dom";
+import {DarkModeContext} from '../App'
 
 function AdminPage () {
 
@@ -9,6 +10,7 @@ function AdminPage () {
     const [loggedId, setLoggedId] = useState("");
 
     const navigate = useNavigate();
+    let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
 
     useEffect(()=>{
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
@@ -92,7 +94,7 @@ function AdminPage () {
                                 </div>    
                             </td>
                             <td key='delete'>
-                                <button className="delete" onClick={deleteUser} ><i className="bi bi-trash3-fill" id={user._id}></i></button>  
+                                <button className={darkMode === "true" ? "nostyle dark": "nostyle"} onClick={deleteUser} ><i className="bi bi-trash3-fill" id={user._id}></i></button>  
                             </td>
                         </tr>
                     )    
@@ -102,10 +104,10 @@ function AdminPage () {
         
     }
     return(
-        <>
+        <div className={darkMode === "true" ? "container dark" : "container"}>
             <h1>AdminPage</h1>
-            <table className="table table-bordered">
-                <thead className="table-dark">
+            <table className={darkMode === "true" ? "table table-bordered table-dark" : "table table-bordered"}>
+                <thead>
                     <tr>
                         <th scope="col" key='idtitle'>id</th>
                         <th scope="col" key='usernametitle'>username</th>
@@ -117,7 +119,7 @@ function AdminPage () {
                     {createUsers()}
             </table>
 
-        </>
+        </div>
         
     )
 }

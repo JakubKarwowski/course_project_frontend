@@ -2,7 +2,7 @@ a.navbar-brand{
     font-size: 25px;
 }
 a.navbar-brand:hover{
-    color: #aaa;
+    color: #666;
 }
 
 div.container-fluid{
@@ -11,4 +11,36 @@ div.container-fluid{
 div.user{
     color: #777;
     height: 100%;
+}
+button.nostyle{
+    font-size: 25px;
+    border: none;
+    background-color: transparent;
+    margin: 0 10px;
+}
+button.nostyle:hover{
+    color: #666;
+}
+button.nostyle.dark {
+    color: white;
+}
+button.nostyle.dark:hover {
+    color: #666;
+}
+
+
+button.link {
+    margin: 10px;
+    padding: 0;
+    background-color: transparent;
+    border:none;
+}
+button.link:hover {
+    color:#666
+}
+button.link.dark {
+    color:white
+}
+button.link.dark:hover {
+    color:#666
 }

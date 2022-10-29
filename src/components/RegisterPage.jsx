@@ -1,9 +1,12 @@
 import axios from "axios";
 import "../styles/RegisterPage.css";
 import {useNavigate} from "react-router-dom";
+import { useContext } from "react";
+import {DarkModeContext} from '../App'
 
 function RegisterPage (){
     const navigate = useNavigate();
+    let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
 
     function handleOnSubmit(e){
         e.preventDefault();
@@ -23,7 +26,7 @@ function RegisterPage (){
         });
     }
     return(
-        <div className="container">
+        <div className={darkMode === "true" ? "container dark" : "container"}>
             <h1> Add new account:</h1>
             <form onSubmit={handleOnSubmit}>
                 <div className="mb-3">

@@ -1,7 +1,8 @@
-import {useEffect, useState} from "react";
+import {useEffect, useState, useContext} from "react";
 import "../styles/MyCollections.css"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
+import {DarkModeContext} from '../App'
 
 
 function MyCollections () {
@@ -15,7 +16,7 @@ function MyCollections () {
     
     
     
-
+    let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
     const collectionNamesList = ["books", "cars", "stamps","shoes"]
     const navigate = useNavigate();
 
@@ -156,36 +157,37 @@ function MyCollections () {
         let userCollections
         adminStatus ? userCollections = collections : userCollections = collections.filter((collection) => collection.owner === username)
         return(
-            <div className="row">
-                {userCollections.map((collection) =>(
-                    <div className="collection m-2 col-sm-3" onClick={()=>navigate(`/mycollections/${collection._id}`)}>
-                        <div className="card text-center ">
-                            <div className="card-body">
-                                <h5 className="card-title">Name: {collection.name}</h5>
-                                <h6 className="card-subtitle mb-2 text-muted">Author: {collection.owner}</h6>
-                                <p className="card-text">Topic: {collection.topic}</p>
-                                <p className="card-text">Description: {collection.description}</p>
-                                {collection.items.length ? <h6 className="card-subtitle ">Items:</h6> : null}
-                                <ul className="list-group list-group-flush">
-                                    {collection.items.map((item) =>(
-                                        <li className="list-group-item">
-                                            {item.name}{item.tags.map((tag) => (
-                                                <p className='tag'>#{tag} </p>
-                                            ))}                                          
-                                        </li>
-                                    ))}
-                                </ul>
-                                <button id={collection._id} className="btn btn-primary" onClick={handleDelete}>Delete</button>
+                <div className="row">
+                    {userCollections.map((collection) =>(
+                        <div className="collection m-2 col-sm-3" onClick={()=>navigate(`/mycollections/${collection._id}`)}>
+                            <div className={darkMode === "true" ? "card bg-dark text-center" : "card bg-light text-center"}>
+                                <div className="card-body">
+                                    <h5 className="card-title">Name: {collection.name}</h5>
+                                    <h6 className="card-subtitle mb-2 text-muted">Author: {collection.owner}</h6>
+                                    <p className="card-text">Topic: {collection.topic}</p>
+                                    <p className="card-text">Description: {collection.description}</p>
+                                    {collection.items.length ? <h6 className="card-subtitle ">Items:</h6> : null}
+                                    <ul className="list-group list-group-flush">
+                                        {collection.items.map((item) =>(
+                                            <li className={darkMode === "true" ? "list-group-item dark" :"list-group-item"}>
+                                                {item.name}{item.tags.map((tag) => (
+                                                    <p className='tag'>#{tag} </p>
+                                                ))}                                          
+                                            </li>
+                                        ))}
+                                    </ul>
+                                    <button id={collection._id} className="btn btn-primary" onClick={handleDelete}>Delete</button>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                ))}
-            </div>   
+                    ))}
+                </div>   
+            
         )
     }
     return(
         <>
-        <div className="container">
+        <div className={darkMode === "true" ? "container dark" : "container"}>
             <h1>Click any collection to edit</h1>
             <button type="button" className="btn btn-secondary mb-3" onClick={handleOnclick}>Add new collection</button>
             {newCollectionForm()}

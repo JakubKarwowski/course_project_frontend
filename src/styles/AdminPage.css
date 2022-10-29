@@ -1,11 +1,14 @@
-td button.delete{
+td button.nostyle{
     margin:0 5px;
     padding:0;
     border:none;
     background-color: transparent;
+    color: black;
+    font-size: 17px;
 }
-th button.delete:hover{
-    color: #bbb
+td button.nostyle:hover{
+    color: #bbb;
+    background-color: transparent;
 }
 
 input.form-check-input:hover{

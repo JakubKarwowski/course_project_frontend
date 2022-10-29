@@ -1,11 +1,14 @@
 import axios from "axios";
-import {useLayoutEffect, useState} from "react";
+import {useLayoutEffect, useState, useContext} from "react";
 import {useNavigate} from "react-router-dom";
+import {DarkModeContext} from '../App'
 
 function LoginPage (){
 
     const[errorMessage, setErrorMessage] = useState("");
     const navigate = useNavigate();
+
+    let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
 
     useLayoutEffect(()=>{
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
@@ -60,7 +63,7 @@ function LoginPage (){
     }
 
     return(
-        <div className="container">
+        <div className={darkMode === "true" ? "container dark" :"container"}>
             <h1>LogonPage</h1>
             <form onSubmit={handleOnSubmit}>
                 <div className="mb-3">
