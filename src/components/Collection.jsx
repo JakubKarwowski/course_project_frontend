@@ -1,23 +1,19 @@
 import axios from "axios";
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import CollectionTable from './CollectionTable'
 import { Typeahead } from 'react-bootstrap-typeahead';
 import 'react-bootstrap-typeahead/css/Typeahead.css';
-import {DarkModeContext} from '../App'
-// import TextInput from 'react-autocomplete-input';
-// import 'react-autocomplete-input/dist/bundle.css';
+
 
 export default function Collection(){
-    const {id} = useParams()
+    const {id} = useParams();
 
     const [collection, setCollection] = useState([]);
     const [items, setItems] = useState([]);
-    const [tagsNumber, setTagsNumber] = useState(0);
     const [newItem, setNewItem] = useState(false);
     const [newCollumn, setNewCollumn] = useState(false);
     const [editItemId, setEditItemId] = useState('');
-    const [nameSortOrder, setNameSortOrder] = useState("");
     const [multiSelections, setMultiSelections] = useState([]);
     
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
@@ -33,9 +29,7 @@ export default function Collection(){
             }
         })
         .then(function(res){
-            // const data = res.data
-            // setUsername(data.username)
-            // setId(data.id)
+
         })
         .catch(err => {
             console.log(err)
@@ -49,27 +43,6 @@ export default function Collection(){
         )
     }, [])
 
-    // function createItems(){
-    //     if (collection.length !== 0 && items){
-    //     return(
-    //         <tbody>
-    //             {items.map((item)=>(
-    //                 <tr>
-    //                     <td key='delete'>
-    //                             <button key="deletebutton" className="delete" onClick={()=>{deleteItem(item._id)}} ><i className="bi bi-trash3-fill"></i></button>  
-    //                     </td>
-    //                     <td key='edit'>
-    //                         <button key="editbutton" className="delete" onClick={()=>{editItem(item._id)}} ><i className="bi bi-pencil-fill"></i></button>  
-    //                     </td>
-    //                     <td key="item">{item.hasOwnProperty('_id') ? item._id : null}</td>
-    //                     <td key="name">{item.name}</td>
-    //                     <td key='tags'>{item.tags.map((tag)=> (<i key={tag}> #{tag}</i>))}</td>
-    //                     {createCustomFieldValues(item)}
-    //                 </tr>
-    //             ))}
-    //         </tbody>
-    //     )}
-    // }
     function deleteItem(id){
         const newItems = items.filter((item)=> {
             return item._id !== id
@@ -80,9 +53,14 @@ export default function Collection(){
         console.log(newItems)
         axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
         {id:collection._id, items:newItems})
-        // document.location.reload()
+        document.location.reload()
     }
     function editItem(id){
+        setNewCollumn(false)
+        setNewItem(false)
+        let item = items.find((item)=>item._id === id)
+        let itemTags = item.tags;
+        setMultiSelections(itemTags)
         setEditItemId(id)
         setNewCollumn(false)
         setNewItem(false)
@@ -108,7 +86,7 @@ export default function Collection(){
                         multiple
                         onChange={setMultiSelections}
                         options={allTtags}
-                        defaultSelected={item.tags}
+                        selected={multiSelections}
                         minLength="1"
                         align="left"
                         allowNew
@@ -247,31 +225,6 @@ export default function Collection(){
             )
         }
     }
-    // function createTags(){
-
-    //     return(
-    //         <div className="form-group mb-2 tags">
-    //         <button type="button" onClick={() => setTagsNumber(tagsNumber + 1)} className="btn btn-primary">Add Tag</button>
-    //         {addTags()}
-    //         </div>
-    //     )
-    // }
-    // function addTags(){
-    //     let tags = [];
-    //         items.map((item) => item.tags.map((tag) => tags = [...tags , tag]))
-    //     return(
-    //         // [...Array(tagsNumber)].map((item)=>(<TextInput options={tags} Component='string'  />)) 
-    //         <Typeahead
-    //         id="tagsselection"
-    //         labelKey="name"
-    //         multiple
-    //         onChange={setMultiSelections}
-    //         options={tags}
-    //         placeholder="Add several tags to the item..."
-    //         selected={multiSelections}
-    //         />
-    //     )
-    // }
     function customFieldInput(field,id){
         if (!id) {id = field.name}
         let placeHolder;
@@ -312,7 +265,7 @@ export default function Collection(){
         let customFields = [];
         let itemToBeAdded = {};
         let tags=[];
-        const CFLength = items[0].customFields.length
+        const CFLength = (items.length !== 0) ? items[0].customFields.length : 0;
         if (CFLength !== 0) {
             for (let i=e.target.length - CFLength - 1; i<e.target.length-1; i++) {
                 let field = {
@@ -344,79 +297,14 @@ export default function Collection(){
         {id:collection._id, items:newItems})
         document.location.reload()
     }
-    // function createCustomFieldHeader(){
-    //     if (items && items.length !==0 && items[0].customFields.length !== 0 ){
-    //         console.log(items)
-    //         return(
-    //             items[0].customFields.map((field) => (
-    //                 <th scope="col" onClick={()=>handleSorting(field)} key={field._id}>{field.name}</th>
-    //             ))
-    //         )
-    //     }
-    // }
-    // function createCustomFieldValues(item){
-    //     if (items && items.length !==0 && items[0].customFields.length !== 0 ){
-    //         return(
-    //             item.customFields.map((field)=>(<td key={field._id}>{field.value}</td>))
-    //         )
-    //     }
-    // }
-    // function handleSorting(e){
-    //     if (e === "id"){
-    //         if(nameSortOrder !== "id"){
-    //             setItems(items.sort((a,b) => a._id.toString().localeCompare(b._id.toString())))
-    //             setNameSortOrder("id")
-    //         } else if (nameSortOrder === "id"){
-    //             setItems(items.sort((a,b) => b._id.toString().localeCompare(a._id.toString())))
-    //             setNameSortOrder("")
-    //         }
-            
-    //     } else if (e === "name"){
-    //         if(nameSortOrder !== "name"){
-    //             setItems(items.sort((a,b) => a.name.localeCompare(b.name)))
-    //             setNameSortOrder("name")
-    //         }else if (nameSortOrder === "name"){
-    //             setItems(items.sort((a,b) => b.name.localeCompare(a.name)))
-    //             setNameSortOrder("")
-    //         }
-    //     }    
-    //     else {
-    //         if(nameSortOrder !== e.name){
-    //             console.log(e.type)
-    //             let fieldToBeSortedBy = items[0].customFields.find((field)=> field.name === e.name)
-    //             let index = items[0].customFields.indexOf(fieldToBeSortedBy)
-    //             if(e.type[0] === "Text" || e.type[0] === "Multiline text"){
-    //                 setItems(items.sort((a,b) => a.customFields[index] > b.customFields[index] ? 1 : -1 ))
-    //             } else if (e.type === "Number"){
-    //                 setItems(items.sort((a,b) => a.customFields[index] - b.customFields[index] ? 1 : -1 ))
-    //             }
-    //             setNameSortOrder(e.name[0])
-    //         }
-    //     }    
-        
-    // }
-
     return(
-        <div className={darkMode ? "container dark" : "container"}>
+        <div className={darkMode === "true" ? "container dark" : "container"}>
         <h1>Collection {collection.name}</h1>
-        <button type="button" className="btn btn-secondary m-2" onClick={()=>{setNewItem(!newItem);setNewCollumn(false);setEditItemId('')}}>Add new item</button>
+        <button type="button" className="btn btn-secondary m-2" onClick={()=>{setNewItem(!newItem);setNewCollumn(false);setEditItemId('');setMultiSelections([])}}>Add new item</button>
         <button type="button" className="btn btn-secondary m-2" onClick={()=>{setNewCollumn(!newCollumn); setNewItem(false);setEditItemId('')}}>Add new collumn</button>
         {addNewCollumn()}
         {addNewItem()}
         {addEditItem()}
-        {/* <table className="table table-bordered" id="sortTable">
-            <thead className="table-dark">
-                <tr>
-                    <th scope="col" key='deletetitle'></th>
-                    <th scope="col" key='edittitle'></th>
-                    <th scope="col" onClick={()=>handleSorting("id")} key='idtitle'>id</th>
-                    <th scope="col" onClick={()=>handleSorting("name")} key='nametitle'>name</th>
-                    <th scope="col" key='tagtitle'>tags</th>
-                    {createCustomFieldHeader()}
-                </tr>
-            </thead>
-                {createItems()}
-        </table> */}
         <CollectionTable id = {id} deleteItem = {deleteItem} editItem = {editItem} items = {items} />
         </div>
     )

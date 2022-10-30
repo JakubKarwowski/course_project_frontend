@@ -1,6 +1,6 @@
 import axios from "axios";
-import {useEffect, useState, useContext} from "react";
-import {useNavigate, useParams} from "react-router-dom";
+import {useEffect, useState} from "react";
+import {useNavigate} from "react-router-dom";
 import {
     DatatableWrapper,
     Filter,
@@ -9,11 +9,9 @@ import {
   } from 'react-bs-datatable';
   import { Button, Col, Row, Table } from 'react-bootstrap';
   import 'bootstrap/dist/css/bootstrap.min.css';
-  import {DarkModeContext} from '../App'
 
 export default function CollectionTable(props){
 
-    const [collection, setCollection] = useState([]);
     const [items, setItems] = useState([]);
     
 
@@ -35,7 +33,6 @@ export default function CollectionTable(props){
         })
         axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections/${id}`)
         .then((res)=> {
-            setCollection(res.data)
             setItems(res.data.items)
         }
         )

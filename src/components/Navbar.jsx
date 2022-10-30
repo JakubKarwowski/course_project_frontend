@@ -1,8 +1,7 @@
 import "../styles/Navbar.css"
 import axios from "axios"
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {DarkModeContext} from '../App'
 
 function Navbar() {
 
@@ -31,13 +30,10 @@ function Navbar() {
         .catch(err => setErrorMessage(err))
     })
 
-    // const darkMode = localStorage.getItem(darkMode);
-
     function logout(){
         localStorage.removeItem("token")
         navigate("/")
     }
-
     function handleAdminPage(){
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
         .then(res => {
@@ -53,7 +49,6 @@ function Navbar() {
             )
         }        
     }
-
     function handleButtonList(){
         if (logonStatus) {
             return(
@@ -83,7 +78,6 @@ function Navbar() {
             )
         }
     }   
-
     function handleDarkMode(){
         if (darkMode === "true") {
             localStorage.setItem("darkMode", "false")

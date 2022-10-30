@@ -7,9 +7,6 @@ import LoginPage from './components/LoginPage';
 import MyCollections from './components/MyCollections';
 import RegisterPage from './components/RegisterPage';
 import Collection from './components/Collection';
-import {createContext, useState} from "react";
-
-const DarkModeContext = createContext();
 
 function App() {
   let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;

@@ -1,7 +1,6 @@
 import axios from "axios";
-import {useLayoutEffect, useState, useContext} from "react";
+import {useLayoutEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
-import {DarkModeContext} from '../App'
 
 function LoginPage (){
 

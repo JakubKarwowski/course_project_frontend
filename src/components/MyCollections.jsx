@@ -1,9 +1,7 @@
-import {useEffect, useState, useContext} from "react";
+import {useEffect, useState} from "react";
 import "../styles/MyCollections.css"
 import axios from "axios";
 import {useNavigate} from "react-router-dom";
-import {DarkModeContext} from '../App'
-
 
 function MyCollections () {
 
@@ -13,8 +11,6 @@ function MyCollections () {
     const [username, setUsername] = useState("");
     const [collections, setCollections] = useState([]);
     const [collection, setCollection] = useState([]);
-    
-    
     
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
     const collectionNamesList = ["books", "cars", "stamps","shoes"]
