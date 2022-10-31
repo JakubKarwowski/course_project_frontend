@@ -53,7 +53,9 @@ export default function Collection(){
         console.log(newItems)
         axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
         {id:collection._id, items:newItems})
-        document.location.reload()
+        setTimeout(function(){
+            window.location.reload();
+         }, 200);
     }
     function editItem(id){
         setNewCollumn(false)
@@ -143,7 +145,9 @@ export default function Collection(){
         setEditItemId('')
         axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
         {id:collection._id, items:items})
-        document.location.reload()
+        setTimeout(function(){
+            window.location.reload();
+         }, 200);
     }
     function addNewCollumn(){
         if(newCollumn){
@@ -183,7 +187,9 @@ export default function Collection(){
         setNewCollumn(!newCollumn)
         axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
         {id:collection._id, items:items})
-        document.location.reload()
+        setTimeout(function(){
+            window.location.reload();
+         }, 200);
     }
     function addNewItem(){
         if (newItem){
@@ -295,7 +301,9 @@ export default function Collection(){
         setNewItem(!newItem)
         axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
         {id:collection._id, items:newItems})
-        document.location.reload()
+        setTimeout(function(){
+            window.location.reload();
+         }, 200);
     }
     return(
         <div className={darkMode === "true" ? "container dark" : "container"}>
