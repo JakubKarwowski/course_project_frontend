@@ -1,6 +1,7 @@
 {
   "name": "frontend",
   "version": "0.1.0",
+  "homepage": "https://JakubKarwowski.github.io/course_project_frontend",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.16.5",
@@ -19,8 +20,10 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "node --max_old_space_size=2048 node_modules/.bin/react-scripts start",
-    "build": "node --max_old_space_size=2048 node_modules/.bin/react-scripts build",
+    "predeploy": "npm run build",
+    "deploy": "react-scripts build",
+    "start": "react-scripts start",
+    "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
@@ -41,5 +44,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "gh-pages": "^4.0.0"
   }
 }
