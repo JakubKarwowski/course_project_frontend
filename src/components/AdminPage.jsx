@@ -23,7 +23,7 @@ function AdminPage () {
         })
         .catch(err => {
             console.log(err)
-            navigate('/')
+            navigate('/course_project_frontend')
         })
 
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
