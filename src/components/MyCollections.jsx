@@ -10,7 +10,9 @@ function MyCollections () {
     const [newFormState, setNewFormState] = useState(false);
     const [username, setUsername] = useState("");
     const [collections, setCollections] = useState([]);
-    const [collection, setCollection] = useState([]);
+    // const [collection, setCollection] = useState([]);
+    const [allItems, setAllItems] = useState([]);
+    
     
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
     const collectionNamesList = ["books", "cars", "stamps","shoes"]
@@ -34,6 +36,11 @@ function MyCollections () {
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections')
         .then((res)=> {
             setCollections(res.data);
+        }
+        )
+        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
+        .then((res)=> {
+            setAllItems(res.data);
         }
         )
         
@@ -102,41 +109,41 @@ function MyCollections () {
     function handleOnclick(){
             setNewFormState(!newFormState)
     }
-    function editCollection(){
-        if (collection.length !== 0 && collections.includes(collection)){
-            return(
-                <div className="background">
-                        <div className="editcollectioncontainer">
-                            <button onClick={closePopUp} className="close btn btn-secondary mb-3"><i className="bi bi-x-lg"></i></button>
-                            <table className="table table-bordered">
-                                <thead className="table-dark">
-                                    <tr>
-                                        <th scope="col" key='idtitle'>id</th>
-                                        <th scope="col" key='name'>name</th>
-                                        <th scope="col" key='tags'>tags</th>
-                                    </tr>
-                                </thead>
-                                {collection.items.map((item)=>{
-                                    return(
-                                        <tr>
-                                            <td key='id'>{item._id}</td>
-                                            <td key='username'>{item.name}</td>
-                                            <td key='tags'>{item.tags.map((tag) => (
-                                                `#${tag} `
-                                            ))}</td>
-                                        </tr>
+    // function editCollection(){
+    //     if (collection.length !== 0 && collections.includes(collection)){
+    //         return(
+    //             <div className="background">
+    //                     <div className="editcollectioncontainer">
+    //                         <button onClick={closePopUp} className="close btn btn-secondary mb-3"><i className="bi bi-x-lg"></i></button>
+    //                         <table className="table table-bordered">
+    //                             <thead className="table-dark">
+    //                                 <tr>
+    //                                     <th scope="col" key='idtitle'>id</th>
+    //                                     <th scope="col" key='name'>name</th>
+    //                                     <th scope="col" key='tags'>tags</th>
+    //                                 </tr>
+    //                             </thead>
+    //                             {collection.items.map((item)=>{
+    //                                 return(
+    //                                     <tr>
+    //                                         <td key='id'>{item._id}</td>
+    //                                         <td key='username'>{item.name}</td>
+    //                                         <td key='tags'>{item.tags.map((tag) => (
+    //                                             `#${tag} `
+    //                                         ))}</td>
+    //                                     </tr>
                                         
-                                    )
-                                })}
-                            </table>    
-                        </div>
-                </div>
-            )
-        }
-    }
-    function closePopUp(){
-        setCollection([])
-    }
+    //                                 )
+    //                             })}
+    //                         </table>    
+    //                     </div>
+    //             </div>
+    //         )
+    //     }
+    // }
+    // function closePopUp(){
+    //     setCollection([])
+    // }
     function handleDelete(e){
         axios.delete(`https://courseprojectjakubkarwowski.herokuapp.com/collections/deletecollection`, {data: {id: e.target.id}})
         setCollections(collections.filter((collection)=> {
@@ -162,9 +169,9 @@ function MyCollections () {
                                     <h6 className="card-subtitle mb-2 text-muted">Author: {collection.owner}</h6>
                                     <p className="card-text">Topic: {collection.topic}</p>
                                     <p className="card-text">Description: {collection.description}</p>
-                                    {collection.items.length ? <h6 className="card-subtitle ">Items:</h6> : null}
+                                    {allItems.filter((item) => item.collectionId === collection._id).length !==0 ? <h6 className="card-subtitle ">Items:</h6> : null}
                                     <ul className="list-group list-group-flush">
-                                        {collection.items.map((item) =>(
+                                        {allItems.filter((item) => item.collectionId === collection._id).map((item) =>(
                                             <li className={darkMode === "true" ? "list-group-item dark" :"list-group-item"}>
                                                 {item.name}{item.tags.map((tag) => (
                                                     <p className='tag'>#{tag} </p>
@@ -187,7 +194,7 @@ function MyCollections () {
             <h1>Click any collection to edit</h1>
             <button type="button" className="btn btn-secondary mb-3" onClick={handleOnclick}>Add new collection</button>
             {newCollectionForm()}
-            {editCollection()}
+            {/* {editCollection()} */}
             {createCollections()}
         </div>
         </>

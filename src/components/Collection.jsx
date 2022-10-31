@@ -15,6 +15,7 @@ export default function Collection(){
     const [newCollumn, setNewCollumn] = useState(false);
     const [editItemId, setEditItemId] = useState('');
     const [multiSelections, setMultiSelections] = useState([]);
+    const [user, setUser] = useState('');
     
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
 
@@ -29,6 +30,7 @@ export default function Collection(){
             }
         })
         .then(function(res){
+            setUser(res.data.username)
 
         })
         .catch(err => {
@@ -38,21 +40,24 @@ export default function Collection(){
         axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections/${id}`)
         .then((res)=> {
             setCollection(res.data)
-            setItems(res.data.items)
         }
         )
+        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
+        .then((res)=> {
+            setItems(res.data.filter((item)=> item.collectionId === id));
+        }
+        )
+
+
+
     }, [])
 
     function deleteItem(id){
-        const newItems = items.filter((item)=> {
-            return item._id !== id
-        })
         setItems(items.filter((item)=> {
             return item._id !== id
         }))
-        console.log(newItems)
-        axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
-        {id:collection._id, items:newItems})
+        axios.delete('https://courseprojectjakubkarwowski.herokuapp.com/items/deleteitem', 
+        {data: {id: id}})
         setTimeout(function(){
             window.location.reload();
          }, 200);
@@ -64,8 +69,6 @@ export default function Collection(){
         let itemTags = item.tags;
         setMultiSelections(itemTags)
         setEditItemId(id)
-        setNewCollumn(false)
-        setNewItem(false)
         window.scrollTo(0, 190);
     }
     function addEditItem(){
@@ -143,8 +146,9 @@ export default function Collection(){
 
         items[index] = newItem;
         setEditItemId('')
-        axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
-        {id:collection._id, items:items})
+        axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/items/edititem', 
+        {id:itemToBeChanged._id, name:e.target[0].value, tags: tags,
+            customFields: customFields})
         setTimeout(function(){
             window.location.reload();
          }, 200);
@@ -183,10 +187,11 @@ export default function Collection(){
             type: dataType,
             value:''
         }
-        items.map((item)=>{item.customFields = [...item.customFields, newField]})
-        setNewCollumn(!newCollumn)
-        axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
-        {id:collection._id, items:items})
+        items.map((item)=>{item.customFields = [...item.customFields, newField]
+            axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/items/edititem', 
+            {id:item._id, customFields:item.customFields})
+        })
+        setNewCollumn(!newCollumn) 
         setTimeout(function(){
             window.location.reload();
          }, 200);
@@ -267,7 +272,6 @@ export default function Collection(){
     }
     function handleAddItem(e){
         e.preventDefault();
-        console.log("Start")
         let customFields = [];
         let itemToBeAdded = {};
         let tags=[];
@@ -294,13 +298,22 @@ export default function Collection(){
             name: e.target[0].value,
             tags: tags,
             customFields: customFields,
+            author : user,
+            collectionId : collection._id,
+            collectionName: collection.name,
         }
-        const newItems = [...items, itemToBeAdded]
+        console.log(itemToBeAdded)
         setItems([...items, itemToBeAdded])
-        console.log(newItems)
+        axios.post('https://courseprojectjakubkarwowski.herokuapp.com/items/createitem', 
+        {
+            name: itemToBeAdded.name,
+            tags: itemToBeAdded.tags,
+            customFields: itemToBeAdded.customFields,
+            author : itemToBeAdded.author,
+            collectionId : itemToBeAdded.collectionId,
+            collectionName: itemToBeAdded.collectionName,
+        })
         setNewItem(!newItem)
-        axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection', 
-        {id:collection._id, items:newItems})
         setTimeout(function(){
             window.location.reload();
          }, 200);

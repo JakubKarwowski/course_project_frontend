@@ -31,9 +31,9 @@ export default function CollectionTable(props){
             console.log(err)
             navigate('/')
         })
-        axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections/${id}`)
+        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
         .then((res)=> {
-            setItems(res.data.items)
+            setItems(res.data.filter((item)=> item.collectionId === id));
         }
         )
     }, [])
