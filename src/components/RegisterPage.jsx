@@ -1,8 +1,7 @@
 import axios from "axios";
 import "../styles/RegisterPage.css";
 import {useNavigate} from "react-router-dom";
-import { useContext } from "react";
-import {DarkModeContext} from '../App'
+
 
 function RegisterPage (){
     const navigate = useNavigate();
