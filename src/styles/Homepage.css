@@ -1,0 +1,8 @@
+div.tag-cloud{
+    margin: auto;
+    max-width: 75%;
+}
+
+span.tag-cloud-tag:hover{
+    cursor: pointer;
+}

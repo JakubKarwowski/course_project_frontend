@@ -6,8 +6,7 @@ import { TagCloud } from 'react-tagcloud'
 
 export default function TagsCloud(){
 
-    const [items, setItems] = useState([]);    
-    const [tags, setTags] = useState([]);    
+    const [items, setItems] = useState([]);      
 
     const navigate = useNavigate();
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
@@ -31,9 +30,37 @@ export default function TagsCloud(){
         )
     }, [])
     
+    let tags=[];
 
+    items.map((item) =>{
+        item.tags.map((tag)=>{
+            tags = [...tags, tag];
+        })
+    })
+    const tagsCalculated = {};
 
+    for(const tag of tags) {
+        if(tagsCalculated[tag]){
+            tagsCalculated[tag] +=1;
+        } else{
+            tagsCalculated[tag] = 1
+        }
+    }
+
+    const tagNames = Object.keys(tagsCalculated);
+    const tagValues = Object.values(tagsCalculated);
+    let data=[];
+
+    for (let i=0; i<tagNames.length; i++){
+        let datafield = {value: tagNames[i], count: 12 + tagValues[i]*2}
+        data = [...data, datafield]
+    }
     return(
-        null
+        <TagCloud
+            minSize={20}
+            maxSize={70}
+            tags={data}
+            onClick={tag => alert(`'${tag.value}' was selected!`)}
+        />
     )
 }

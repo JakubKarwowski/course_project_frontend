@@ -14,7 +14,7 @@ function Homepage () {
             <LatestItems/>
             <h2>Top 5 largest collections:</h2>
             <LargestCollections/>
-            <h2>tag cloud (when the user clicks on the tag you display the list of items — in general you should use “search results page” for it).</h2>
+            <h2>Tag cloud:</h2>
             <TagsCloud/>
         </div>
         
