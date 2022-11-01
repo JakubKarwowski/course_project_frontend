@@ -2,11 +2,13 @@ import axios from "axios";
 import {useEffect, useState} from "react";
 import {useNavigate} from "react-router-dom";
 import { TagCloud } from 'react-tagcloud'
+import SearchItemsResults from "./SearchItemsResults";
 
 
 export default function TagsCloud(){
 
     const [items, setItems] = useState([]);      
+    const [searchedItems, setSearchedItems] = useState([]);      
 
     const navigate = useNavigate();
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
@@ -56,11 +58,18 @@ export default function TagsCloud(){
         data = [...data, datafield]
     }
     return(
+        <>
         <TagCloud
             minSize={20}
             maxSize={70}
             tags={data}
-            onClick={tag => alert(`'${tag.value}' was selected!`)}
+            onClick={tag => {
+                axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/items/searchitems/${tag.value}`)
+                .then((res)=> {
+                setSearchedItems(res.data)
+                })}}
         />
+        {searchedItems.length !== 0 ? <SearchItemsResults searchedItems ={searchedItems} setSearchedItems = {setSearchedItems} /> : null}
+        </>
     )
 }

@@ -2,10 +2,12 @@ import '../styles/Homepage.css'
 import LatestItems from './LatestItems'
 import LargestCollections from './LargestCollections';
 import TagsCloud from './TagsCloud';
+import { useTranslation } from 'react-i18next';
 
 function Homepage () {
 
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
+    const { t, i18n } = useTranslation();
 
     return(
         <div className={darkMode === "true" ? "container dark" : "container"}>
