@@ -57,9 +57,9 @@ function Navbar() {
     function handleButtonList(){
         if (logonStatus) {
             return(
-                <div className="navbar-nav" id="navbarNavDropdown">
+                <div className="navbar-nav " id="navbarNavDropdown">
                     <button className="btn  btn-secondary" onClick={logout}>Logout</button>
-                    <ul className="navbar-nav">
+                    <ul className="navbar-nav ">
                         <li className="nav-item">
                             <button className={darkMode ? "link dark" : "link" }onClick={()=> navigate("/mycollections")}>My collections</button>
                         </li>
@@ -106,20 +106,23 @@ function Navbar() {
         )
 
     }
-
     return(
         <>
-        <nav className={darkMode ?'navbar navbar-expand-lg navbar-dark bg-dark' :'navbar navbar-expand-lg navbar-light bg-light'}>
+        <nav className={darkMode ?'navbar navbar-expand-sm navbar-dark bg-dark' :'navbar navbar-expand-lg navbar-light bg-light'}>
             <div className="container-fluid">
-            <button className={darkMode ? "nostyle dark" : "nostyle light"} onClick={()=> navigate("/")}><i className="bi bi-house-door-fill"></i></button>       
-                {handleButtonList()}                
-                <button className={darkMode ? "nostyle dark" : "nostyle light"} onClick={()=>handleDarkMode()}>
-                    {darkMode ? <i className="bi bi-sun-fill"></i> : <i className="bi bi-moon-fill"></i>  }
-                </button>
-                <form className="d-flex" role="search" onSubmit={handleSearch}>
-                    <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
-                    <button className="btn btn-secondary" type="submit">Search</button>
-                </form>
+                <div className="left d-flex">
+                    <button className={darkMode ? "nostyle dark" : "nostyle light"} onClick={()=> navigate("/")}><i className="bi bi-house-door-fill"></i></button>
+                    {handleButtonList()}
+                </div>
+                <div className="right d-flex">
+                    <button className={darkMode ? "nostyle dark" : "nostyle light"} onClick={()=>handleDarkMode()}>
+                        {darkMode ? <i className="bi bi-sun-fill"></i> : <i className="bi bi-moon-fill"></i>  }
+                    </button>
+                    <form className="d-flex" role="search" onSubmit={handleSearch}>
+                        <input className="form-control me-2" type="search" placeholder="Search" aria-label="Search"></input>
+                        <button className="btn btn-secondary" type="submit">Search</button>
+                    </form>
+                </div>
             </div>
         </nav>
         <div className={darkMode === "true" ? "container dark" : "container"}>
