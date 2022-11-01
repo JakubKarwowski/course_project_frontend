@@ -68,7 +68,8 @@ export default function TagsCloud(){
                 .then((res)=> {
                 setSearchedItems(res.data)
                 })
-                window.scrollTo(0, document.body.scrollHeight);}}
+                .then(window.scrollTo(0, document.body.scrollHeight))
+                }}
         />
         {searchedItems.length !== 0 ? <SearchItemsResults searchedItems ={searchedItems} setSearchedItems = {setSearchedItems} /> : null}
         </>
