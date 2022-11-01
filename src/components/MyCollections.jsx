@@ -10,12 +10,12 @@ function MyCollections () {
     const [newFormState, setNewFormState] = useState(false);
     const [username, setUsername] = useState("");
     const [collections, setCollections] = useState([]);
-    // const [collection, setCollection] = useState([]);
+    const [collection, setCollection] = useState([]);
     const [allItems, setAllItems] = useState([]);
     
     
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
-    const collectionNamesList = ["books", "cars", "stamps","shoes"]
+    const collectionNamesList = ["books", "cars", "alcohol","shoes"]
     const navigate = useNavigate();
 
     useEffect(()=>{
@@ -28,6 +28,7 @@ function MyCollections () {
             const data = res.data
             setUsername(data.username)
             setId(data.id)
+            setAdminStatus(data.admin)
         })
         .catch(err => {
             console.log(err)
@@ -43,8 +44,6 @@ function MyCollections () {
             setAllItems(res.data);
         }
         )
-        
-
     }, [])
 
     function handleOnSubmit(e){
@@ -57,24 +56,49 @@ function MyCollections () {
             description: description,
             topic: topic,
             owner: username,
-            items: [],
         })
         .then(res => {
             setNewFormState(!newFormState)
+            setTimeout(function(){
+                window.location.reload();
+             }, 200);
         })
         .catch(err => {
             console.log(err);
         })
     }
-    function createChoice(){
+    function handleSubmitEdit(e){
+        e.preventDefault();
+        console.log(collection)
+        axios.patch("https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection" , {
+            id: collection[0]._id,
+            name: e.target[0].value,
+            description: e.target[1].value,
+            topic: e.target[2].value,
+        })
+        .then(res => {
+            console.log(res)
+            setTimeout(function(){
+                setCollection([])
+                window.location.reload();
+             }, 200);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+
+    }
+    function createChoice(topic){
         return(
             <div className="form-group mb-2">
                 <label className="form-label">Topic:</label>
                 <select className="form-control" id="topicSelect">
                     {collectionNamesList.map(item =>{
-                        return (
-                            <option key={item}>{item}</option>
-                        )
+                        if(item === topic){
+                            return (<option selected key={item}>{item}</option>)
+                         }else{
+                            return (<option key={item}>{item}</option>)
+                         }
                     })}
                 </select>
             </div>
@@ -95,10 +119,6 @@ function MyCollections () {
                         <textarea className="form-control" id="Description" rows="3"></textarea>
                     </div>
                     {createChoice()}
-                    {/* <div className="mb-2">
-                        <label className="custom-file-label mb-2">Add optional picture:</label><br/>
-                        <input type="file" accept="image/png, image/jpeg" className="custom-file-input mb-2" id="customFile"/> 
-                    </div> */}
                     <button type="submit" className="btn btn-primary">Submit</button>
                 </form>
                 </div>
@@ -108,61 +128,55 @@ function MyCollections () {
     }
     function handleOnclick(){
             setNewFormState(!newFormState)
+            setCollection([])
     }
-    // function editCollection(){
-    //     if (collection.length !== 0 && collections.includes(collection)){
-    //         return(
-    //             <div className="background">
-    //                     <div className="editcollectioncontainer">
-    //                         <button onClick={closePopUp} className="close btn btn-secondary mb-3"><i className="bi bi-x-lg"></i></button>
-    //                         <table className="table table-bordered">
-    //                             <thead className="table-dark">
-    //                                 <tr>
-    //                                     <th scope="col" key='idtitle'>id</th>
-    //                                     <th scope="col" key='name'>name</th>
-    //                                     <th scope="col" key='tags'>tags</th>
-    //                                 </tr>
-    //                             </thead>
-    //                             {collection.items.map((item)=>{
-    //                                 return(
-    //                                     <tr>
-    //                                         <td key='id'>{item._id}</td>
-    //                                         <td key='username'>{item.name}</td>
-    //                                         <td key='tags'>{item.tags.map((tag) => (
-    //                                             `#${tag} `
-    //                                         ))}</td>
-    //                                     </tr>
-                                        
-    //                                 )
-    //                             })}
-    //                         </table>    
-    //                     </div>
-    //             </div>
-    //         )
-    //     }
-    // }
-    // function closePopUp(){
-    //     setCollection([])
-    // }
+    function editCollection(){
+        if(collection.length !==0) {
+            return(
+                <div className="formcontainer">
+                    <form className="newcollection" onSubmit={handleSubmitEdit}>
+                    <h3>Edit collection "{collection[0].name}":</h3>
+                    <div className="mb-2">
+                        <label className="form-label">Name:</label>
+                        <input className="form-control" id="name" defaultValue={collection[0].name}></input>
+                    </div>
+                    <div className="form-group mb-2">
+                        <label className="form-label">Description:</label>
+                        <textarea className="form-control" id="Description" rows="3" defaultValue={collection[0].description}></textarea>
+                    </div>
+                    {createChoice(collection[0].topic)}
+                    <button type="submit" className="btn btn-primary">Edit collection</button>
+                </form>
+                </div>
+                
+            )
+        } 
+        
+    }
     function handleDelete(e){
+        let itemsToDeleted = allItems.filter((item)=> item.collectionId === e.target.id)
+        itemsToDeleted.map((item) => {
+            axios.delete('https://courseprojectjakubkarwowski.herokuapp.com/items/deleteitem', 
+        {data: {id: item._id}})
+        })
         axios.delete(`https://courseprojectjakubkarwowski.herokuapp.com/collections/deletecollection`, {data: {id: e.target.id}})
         setCollections(collections.filter((collection)=> {
-            return collection._id !==e.target.id})  
+            return collection._id !== e.target.id})  
         )
     };
+    function handleEdit(e){
+        setNewFormState(false)
+        setCollection(collections.filter((collection)=> collection._id === e.target.id))
+        window.scrollTo(0, 200);
+    }
     function createCollections(){
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
-        .then(res => {
-            let user = res.data.find(item => item._id === id)
-            setAdminStatus(user.admin)
-        })
-        .catch(error => console.log(error))
         let userCollections
         adminStatus ? userCollections = collections : userCollections = collections.filter((collection) => collection.owner === username)
         return(
                 <div className="row">
                     {userCollections.map((collection) =>(
-                        <div className="collection m-2 col-sm-3" onClick={()=>navigate(`/mycollections/${collection._id}`)}>
+                        <div className="collection m-2 col-sm-3" onClick={(e)=>{if(e.target.localName !== "button") navigate(`/mycollections/${collection._id}`)
+                            }}>
                             <div className={darkMode === "true" ? "card bg-dark text-center" : "card bg-light text-center"}>
                                 <div className="card-body">
                                     <h5 className="card-title">Name: {collection.name}</h5>
@@ -180,6 +194,7 @@ function MyCollections () {
                                         ))}
                                     </ul>
                                     <button id={collection._id} className="btn btn-primary" onClick={handleDelete}>Delete</button>
+                                    <button id={collection._id} className="btn btn-primary" onClick={handleEdit}>Edit</button>
                                 </div>
                             </div>
                         </div>
@@ -191,10 +206,10 @@ function MyCollections () {
     return(
         <>
         <div className={darkMode === "true" ? "container dark" : "container"}>
-            <h1>Click any collection to edit</h1>
+            <h1>My collections</h1>
             <button type="button" className="btn btn-secondary mb-3" onClick={handleOnclick}>Add new collection</button>
             {newCollectionForm()}
-            {/* {editCollection()} */}
+            {editCollection()}
             {createCollections()}
         </div>
         </>

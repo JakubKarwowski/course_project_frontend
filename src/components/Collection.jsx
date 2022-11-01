@@ -11,6 +11,7 @@ export default function Collection(){
 
     const [collection, setCollection] = useState([]);
     const [items, setItems] = useState([]);
+    const [allItems, setAllItems] = useState([]);
     const [newItem, setNewItem] = useState(false);
     const [newCollumn, setNewCollumn] = useState(false);
     const [editItemId, setEditItemId] = useState('');
@@ -21,7 +22,7 @@ export default function Collection(){
 
     const navigate = useNavigate();
     let allTtags = [];
-            items.map((item) => item.tags.map((tag) => allTtags = [...allTtags , tag]))
+            allItems.map((item) => item.tags.map((tag) => allTtags = [...allTtags , tag]))
 
     useEffect(()=>{
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
@@ -44,6 +45,7 @@ export default function Collection(){
         )
         axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
         .then((res)=> {
+            setAllItems(res.data)
             setItems(res.data.filter((item)=> item.collectionId === id));
         }
         )

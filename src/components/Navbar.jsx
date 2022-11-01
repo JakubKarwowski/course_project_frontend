@@ -97,13 +97,11 @@ function Navbar() {
         axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/items/searchitems/${e.target[0].value}`)
         .then((res)=> {
             setSearchedItems(res.data)
-            console.log(res.data)
         }
         )
         axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/searchcollections/${e.target[0].value}`)
         .then((res)=> {
             setSearchedCollections(res.data)
-            console.log(res.data)
         }
         )
 

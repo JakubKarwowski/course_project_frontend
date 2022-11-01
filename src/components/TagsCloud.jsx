@@ -67,7 +67,8 @@ export default function TagsCloud(){
                 axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/items/searchitems/${tag.value}`)
                 .then((res)=> {
                 setSearchedItems(res.data)
-                })}}
+                })
+                window.scrollTo(0, document.body.scrollHeight);}}
         />
         {searchedItems.length !== 0 ? <SearchItemsResults searchedItems ={searchedItems} setSearchedItems = {setSearchedItems} /> : null}
         </>
