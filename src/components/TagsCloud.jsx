@@ -14,7 +14,7 @@ export default function TagsCloud(){
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -25,7 +25,7 @@ export default function TagsCloud(){
             console.log(err)
             navigate('/')
         })
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
+        axios.get('http://localhost:5000/items/getitems')
         .then((res)=> {
             setItems(res.data);
         }
@@ -64,7 +64,7 @@ export default function TagsCloud(){
             maxSize={70}
             tags={data}
             onClick={tag => {
-                axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/items/searchitems/${tag.value}`)
+                axios.get(`http://localhost:5000/items/searchitems/${tag.value}`)
                 .then((res)=> {
                 setSearchedItems(res.data)
                 })

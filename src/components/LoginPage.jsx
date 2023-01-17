@@ -10,7 +10,7 @@ function LoginPage (){
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
 
     useLayoutEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -26,7 +26,7 @@ function LoginPage (){
     function handleOnSubmit(e){
         e.preventDefault();
         const form = e.target;
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
+        axios.get('http://localhost:5000/users/getusers')
         .then(res => {
             let user = res.data.find(item => item.username === form[0].value)
             if (user && user.blocked){
@@ -34,7 +34,7 @@ function LoginPage (){
                 console.log(errorMessage)
             }
             else{
-                axios.post('https://courseprojectjakubkarwowski.herokuapp.com/authentication/login', {
+                axios.post('http://localhost:5000/authentication/login', {
                 username: form[0].value,
                 password: form[1].value,
                 })

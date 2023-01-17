@@ -10,7 +10,7 @@ function RegisterPage (){
     function handleOnSubmit(e){
         e.preventDefault();
         const form = e.target
-        axios.post("https://courseprojectjakubkarwowski.herokuapp.com/authentication/register", {
+        axios.post("http://localhost:5000/authentication/register", {
         username: form[0].value,
         name: form[0].value,
         password: form[1].value,

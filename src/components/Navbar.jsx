@@ -20,7 +20,7 @@ function Navbar() {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -40,7 +40,7 @@ function Navbar() {
         navigate("/")
     }
     function handleAdminPage(){
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
+        axios.get('http://localhost:5000/users/getusers')
         .then(res => {
             let user = res.data.find(item => item._id === id)
             setAdminStatus(user.admin)
@@ -94,12 +94,12 @@ function Navbar() {
     }
     function handleSearch(e){
         e.preventDefault();
-        axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/items/searchitems/${e.target[0].value}`)
+        axios.get(`http://localhost:5000/items/searchitems/${e.target[0].value}`)
         .then((res)=> {
             setSearchedItems(res.data)
         }
         )
-        axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/searchcollections/${e.target[0].value}`)
+        axios.get(`http://localhost:5000/collections/searchcollections/${e.target[0].value}`)
         .then((res)=> {
             setSearchedCollections(res.data)
         }

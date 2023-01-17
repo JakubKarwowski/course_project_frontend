@@ -12,7 +12,7 @@ function AdminPage () {
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : false;
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -26,7 +26,7 @@ function AdminPage () {
             navigate('/course_project_frontend')
         })
 
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/users/getusers')
+        axios.get('http://localhost:5000/users/getusers')
         .then((res) => {
             let loggedUser = res.data.filter(user => user._id === localStorage.getItem('id'))
             if(!loggedUser[0].admin){
@@ -37,10 +37,10 @@ function AdminPage () {
 
     function handleOnChangeAdmin(e){
         if (e.target.checked){
-            axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/users/addtoadmins',{id:e.target.id})
+            axios.patch('http://localhost:5000/users/addtoadmins',{id:e.target.id})
         }
         else{
-            axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/users/removefromadmins',{id:e.target.id})
+            axios.patch('http://localhost:5000/users/removefromadmins',{id:e.target.id})
             if(e.target.id === loggedId){
                 navigate('/')
             }
@@ -53,14 +53,14 @@ function AdminPage () {
     }
     function handleOnChangeBlocked(e){
         if (e.target.checked){
-            axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/users/blockuser',{id:e.target.id})
+            axios.patch('http://localhost:5000/users/blockuser',{id:e.target.id})
             if (e.target.id === loggedId){
                 localStorage.removeItem("token")
                 navigate("/")
             }
         }
         else{
-            axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/users/unblockuser',{id:e.target.id})
+            axios.patch('http://localhost:5000/users/unblockuser',{id:e.target.id})
         }
         setUsers(users.map((user)=>{
             return(
@@ -69,7 +69,7 @@ function AdminPage () {
         }))
     }
     function deleteUser(e){
-        axios.delete(`https://courseprojectjakubkarwowski.herokuapp.com/users/deleteuser`, {data: {id: e.target.id}})
+        axios.delete(`http://localhost:5000/users/deleteuser`, {data: {id: e.target.id}})
         setUsers(users.filter((user)=> {
             return user._id !==e.target.id})  
         )

@@ -19,7 +19,7 @@ function MyCollections () {
     const navigate = useNavigate();
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -34,12 +34,12 @@ function MyCollections () {
             console.log(err)
             navigate('/')
         })
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections')
+        axios.get('http://localhost:5000/collections/getcollections')
         .then((res)=> {
             setCollections(res.data);
         }
         )
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
+        axios.get('http://localhost:5000/items/getitems')
         .then((res)=> {
             setAllItems(res.data);
         }
@@ -51,7 +51,7 @@ function MyCollections () {
         const name = e.target[0].value;
         const description = e.target[1].value;
         const topic = e.target[2].value;
-        axios.post("https://courseprojectjakubkarwowski.herokuapp.com/collections/createcollection" , {
+        axios.post("http://localhost:5000/collections/createcollection" , {
             name: name,
             description: description,
             topic: topic,
@@ -70,7 +70,7 @@ function MyCollections () {
     function handleSubmitEdit(e){
         e.preventDefault();
         console.log(collection)
-        axios.patch("https://courseprojectjakubkarwowski.herokuapp.com/collections/editcollection" , {
+        axios.patch("http://localhost:5000/collections/editcollection" , {
             id: collection[0]._id,
             name: e.target[0].value,
             description: e.target[1].value,
@@ -156,10 +156,10 @@ function MyCollections () {
     function handleDelete(e){
         let itemsToDeleted = allItems.filter((item)=> item.collectionId === e.target.id)
         itemsToDeleted.map((item) => {
-            axios.delete('https://courseprojectjakubkarwowski.herokuapp.com/items/deleteitem', 
+            axios.delete('http://localhost:5000/items/deleteitem', 
         {data: {id: item._id}})
         })
-        axios.delete(`https://courseprojectjakubkarwowski.herokuapp.com/collections/deletecollection`, {data: {id: e.target.id}})
+        axios.delete(`http://localhost:5000/collections/deletecollection`, {data: {id: e.target.id}})
         setCollections(collections.filter((collection)=> {
             return collection._id !== e.target.id})  
         )

@@ -19,7 +19,7 @@ export default function LargestCollections(){
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -30,12 +30,12 @@ export default function LargestCollections(){
             console.log(err)
             navigate('/')
         })
-        axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections/`)
+        axios.get(`http://localhost:5000/collections/getcollections/`)
         .then((res)=> {
             setCollections(res.data)
         }
         )
-        axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/items/getitems/`)
+        axios.get(`http://localhost:5000/items/getitems/`)
         .then((res)=> {
             setItems(res.data)
         }

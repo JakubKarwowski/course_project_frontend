@@ -15,7 +15,7 @@ import {
     let darkMode = localStorage.getItem("darkMode") ? localStorage.getItem("darkMode") : "false";
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }

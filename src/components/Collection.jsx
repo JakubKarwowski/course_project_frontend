@@ -25,7 +25,7 @@ export default function Collection(){
             allItems.map((item) => item.tags.map((tag) => allTtags = [...allTtags , tag]))
 
     useEffect(()=>{
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/authentication/isuserauth', {
+        axios.get('http://localhost:5000/authentication/isuserauth', {
             headers: {
                 "x-access-token" : localStorage.getItem("token")
             }
@@ -38,12 +38,12 @@ export default function Collection(){
             console.log(err)
             navigate('/')
         })
-        axios.get(`https://courseprojectjakubkarwowski.herokuapp.com/collections/getcollections/${id}`)
+        axios.get(`http://localhost:5000/collections/getcollections/${id}`)
         .then((res)=> {
             setCollection(res.data)
         }
         )
-        axios.get('https://courseprojectjakubkarwowski.herokuapp.com/items/getitems')
+        axios.get('http://localhost:5000/items/getitems')
         .then((res)=> {
             setAllItems(res.data)
             setItems(res.data.filter((item)=> item.collectionId === id));
@@ -58,7 +58,7 @@ export default function Collection(){
         setItems(items.filter((item)=> {
             return item._id !== id
         }))
-        axios.delete('https://courseprojectjakubkarwowski.herokuapp.com/items/deleteitem', 
+        axios.delete('http://localhost:5000/items/deleteitem', 
         {data: {id: id}})
         setTimeout(function(){
             window.location.reload();
@@ -148,7 +148,7 @@ export default function Collection(){
 
         items[index] = newItem;
         setEditItemId('')
-        axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/items/edititem', 
+        axios.patch('http://localhost:5000/items/edititem', 
         {id:itemToBeChanged._id, name:e.target[0].value, tags: tags,
             customFields: customFields})
         setTimeout(function(){
@@ -190,7 +190,7 @@ export default function Collection(){
             value:''
         }
         items.map((item)=>{item.customFields = [...item.customFields, newField]
-            axios.patch('https://courseprojectjakubkarwowski.herokuapp.com/items/edititem', 
+            axios.patch('http://localhost:5000/items/edititem', 
             {id:item._id, customFields:item.customFields})
         })
         setNewCollumn(!newCollumn) 
@@ -306,7 +306,7 @@ export default function Collection(){
         }
         console.log(itemToBeAdded)
         setItems([...items, itemToBeAdded])
-        axios.post('https://courseprojectjakubkarwowski.herokuapp.com/items/createitem', 
+        axios.post('http://courseprojectjakubkarwowski.herokuapp.com/items/createitem', 
         {
             name: itemToBeAdded.name,
             tags: itemToBeAdded.tags,
