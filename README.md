@@ -10,3 +10,6 @@ https://github.com/JakubKarwowski/course_project_backend
 4. Run the app with npm start command
 
 The frontend of the app is up and running :)
+
+PS. Please remember to run backend app for all functionalities. 
+(details in https://github.com/JakubKarwowski/course_project_backend)
